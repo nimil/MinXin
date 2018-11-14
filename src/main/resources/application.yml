@@ -19,9 +19,9 @@ pagehelper:
 spring:
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://114.115.xxx.xx:3306/minxin?userUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false
+    url: jdbc:mysql://114.115.xxxx:3306/minxin?userUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false
     username: root
-    password: xxxxxx
+    password: xxx
     type: com.zaxxer.hikari.HikariDataSource
     hikari:
       connection-timeout: 30000

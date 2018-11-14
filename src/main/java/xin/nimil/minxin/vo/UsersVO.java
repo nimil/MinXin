@@ -1,91 +1,47 @@
-package xin.nimil.minxin.pojo;
+package xin.nimil.minxin.vo;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Id;
 
-public class Users {
-    @Id
+public class UsersVO {
+
     private String id;
 
-    /**
-     * 用户名，账号，minXin userName
-     */
     private String username;
 
-    /**
-     * 密码
-     */
-    private String password;
-
-    /**
-     * 我的头像，如果没有默认给一张
-     */
-    @Column(name = "face_image")
     private String faceImage;
 
-    @Column(name = "face_image_big")
+
     private String faceImageBig;
 
-    /**
-     * 昵称
-     */
+
     private String nickname;
 
-    /**
-     * 新用户注册后默认后台生成二维码，并且上传到fastdfs
-     */
+
     private String qrcode;
 
-    private String cid;
 
-    /**
-     * @return id
-     */
+
+
     public String getId() {
         return id;
     }
 
-    /**
-     * @param id
-     */
+
     public void setId(String id) {
         this.id = id;
     }
 
-    /**
-     * 获取用户名，账号，慕信号
-     *
-     * @return username - 用户名，账号，慕信号
-     */
+
     public String getUsername() {
         return username;
     }
 
-    /**
-     * 设置用户名，账号，慕信号
-     *
-     * @param username 用户名，账号，慕信号
-     */
+
     public void setUsername(String username) {
         this.username = username;
     }
 
-    /**
-     * 获取密码
-     *
-     * @return password - 密码
-     */
-    public String getPassword() {
-        return password;
-    }
-
-    /**
-     * 设置密码
-     *
-     * @param password 密码
-     */
-    public void setPassword(String password) {
-        this.password = password;
-    }
 
     /**
      * 获取我的头像，如果没有默认给一张
@@ -155,17 +111,5 @@ public class Users {
         this.qrcode = qrcode;
     }
 
-    /**
-     * @return cid
-     */
-    public String getCid() {
-        return cid;
-    }
 
-    /**
-     * @param cid
-     */
-    public void setCid(String cid) {
-        this.cid = cid;
-    }
 }
