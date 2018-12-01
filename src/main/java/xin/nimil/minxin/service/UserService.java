@@ -31,4 +31,7 @@ public interface UserService {
      */
     Users saveUser(Users users);
 
+
+    Users updateUserInfo(Users users);
+
 }
