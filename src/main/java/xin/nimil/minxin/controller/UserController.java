@@ -8,15 +8,18 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import xin.nimil.minxin.bo.UsersBo;
+import xin.nimil.minxin.enums.SerarchFriendsStatusEnums;
 import xin.nimil.minxin.pojo.Users;
 import xin.nimil.minxin.service.UserService;
 import xin.nimil.minxin.utils.FastDFSClient;
 import xin.nimil.minxin.utils.FileUtils;
 import xin.nimil.minxin.utils.MD5Utils;
 import xin.nimil.minxin.utils.MinXinResult;
+import xin.nimil.minxin.vo.FriendRequestVO;
 import xin.nimil.minxin.vo.UsersVO;
 
 import javax.validation.constraints.Min;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -103,5 +106,65 @@ public class UserController {
 
         return MinXinResult.ok(result);
     }
+
+
+    /**
+     * 根据账号做匹配查询而不是模糊查询
+     * @param myUserId
+     * @param friendUsername
+     * @return
+     * @throws Exception
+     */
+    @PostMapping("/search")
+    public MinXinResult searchUser(String myUserId,String friendUsername) throws Exception{
+
+        if(StringUtils.isEmpty(myUserId)||StringUtils.isEmpty(friendUsername)){
+            return MinXinResult.errorMsg("不能为空");
+        }
+
+        Integer status = userService.preconditionSearchFriends(myUserId,friendUsername);
+
+        if (Objects.equals(SerarchFriendsStatusEnums.SUCCESS.getStatus(),status)){
+            Users users = userService.queryUserInfobyUsername(friendUsername);
+            UsersVO usersVO = new UsersVO();
+            BeanUtils.copyProperties(users,usersVO);
+            return MinXinResult.ok(usersVO);
+        }else{
+            String msgByKey = SerarchFriendsStatusEnums.getMsgByKey(status);
+            return MinXinResult.errorMsg(msgByKey);
+        }
+    }
+
+
+    @PostMapping("/addFriendRequest")
+    public MinXinResult addFriendRequest(String myUserId,String friendUsername) throws Exception{
+
+        if(StringUtils.isEmpty(myUserId)||StringUtils.isEmpty(friendUsername)){
+            return MinXinResult.errorMsg("不能为空");
+        }
+
+        Integer status = userService.preconditionSearchFriends(myUserId,friendUsername);
+
+        if (Objects.equals(SerarchFriendsStatusEnums.SUCCESS.getStatus(),status)){
+            userService.sendFriendRequest(myUserId,friendUsername);
+        }else{
+            String msgByKey = SerarchFriendsStatusEnums.getMsgByKey(status);
+            return MinXinResult.errorMsg(msgByKey);
+        }
+
+        return MinXinResult.ok();
+    }
+
+    @PostMapping("queryFriendRequests")
+    public MinXinResult selectFriendReq(String userId){
+        if (StringUtils.isEmpty(userId)){
+            return MinXinResult.errorMsg("userId不能为空");
+        }
+        List<FriendRequestVO> friendRequestVOS = userService.queryFriendRequestList(userId);
+        return MinXinResult.ok(friendRequestVOS);
+
+
+    }
+
 
 }

@@ -1,6 +1,9 @@
 package xin.nimil.minxin.service;
 
 import xin.nimil.minxin.pojo.Users;
+import xin.nimil.minxin.vo.FriendRequestVO;
+
+import java.util.List;
 
 /**
  * @Author:nimil e-mail:nimilgg@qq.com
@@ -8,6 +11,8 @@ import xin.nimil.minxin.pojo.Users;
  * @Time:21:58
  */
 public interface UserService {
+
+    Users queryUserInfobyUsername(String userName);
 
     /**
      * 判断用户是否存在
@@ -33,5 +38,17 @@ public interface UserService {
 
 
     Users updateUserInfo(Users users);
+
+    /**
+     * 搜索朋友的前置条件
+     * @param myUserId
+     * @param friendUsername
+     * @return
+     */
+    Integer preconditionSearchFriends(String myUserId,String friendUsername);
+
+    void sendFriendRequest(String myUserId, String friendUsername);
+
+    List<FriendRequestVO> queryFriendRequestList(String acceptUserId);
 
 }
