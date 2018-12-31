@@ -2,6 +2,7 @@ package xin.nimil.minxin.service;
 
 import xin.nimil.minxin.pojo.Users;
 import xin.nimil.minxin.vo.FriendRequestVO;
+import xin.nimil.minxin.vo.MyFriendsVO;
 
 import java.util.List;
 
@@ -51,4 +52,9 @@ public interface UserService {
 
     List<FriendRequestVO> queryFriendRequestList(String acceptUserId);
 
+    void  removeFriendsRequest(String sendUserId,String acceptUserId);
+
+    void  passFriendsRequest(String sendUserId,String acceptUserId);
+
+    List<MyFriendsVO> queryMyFriends(String userId);
 }

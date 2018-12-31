@@ -20,6 +20,7 @@ import xin.nimil.minxin.utils.FastDFSClient;
 import xin.nimil.minxin.utils.FileUtils;
 import xin.nimil.minxin.utils.QRCodeUtils;
 import xin.nimil.minxin.vo.FriendRequestVO;
+import xin.nimil.minxin.vo.MyFriendsVO;
 
 import java.io.IOException;
 import java.util.Date;
@@ -111,6 +112,39 @@ public class UserServiceImpl implements UserService {
     public List<FriendRequestVO> queryFriendRequestList(String acceptUserId) {
         return usersCustomMapper.queryFriendRequestList(acceptUserId);
     }
+
+    @Override
+    public void removeFriendsRequest(String sendUserId, String acceptUserId) {
+        Example example = new Example(FriendsRequest.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("sendUserId",sendUserId);
+        criteria.andEqualTo("acceptUserId",acceptUserId);
+        friendsRequestMapper.deleteByExample(example);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void passFriendsRequest(String sendUserId, String acceptUserId) {
+        saveFriends(sendUserId,acceptUserId);
+        saveFriends(acceptUserId,sendUserId);
+        removeFriendsRequest(sendUserId,acceptUserId);
+    }
+
+    @Override
+    public List<MyFriendsVO> queryMyFriends(String userId) {
+        List<MyFriendsVO> myFriendsVOS = usersCustomMapper.queryMyFriends(userId);
+        return myFriendsVOS;
+    }
+
+
+    private void saveFriends(String sendUserId,String acceptUserId){
+        MyFriends myFriends = new MyFriends();
+        myFriends.setId(sid.nextShort());
+        myFriends.setMyFriendUserId(acceptUserId);
+        myFriends.setMyUserId(sendUserId);
+        myFriendsMapper.insert(myFriends);
+    }
+
 
     @Override
     public Users queryUserInfobyUsername(String userName){
